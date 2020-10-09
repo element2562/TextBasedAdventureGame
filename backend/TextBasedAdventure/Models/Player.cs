@@ -23,6 +23,10 @@ namespace TextBasedAdventure.Models
 
         public int Defense { get; set; }
 
+        public int Gold { get; set; }
+
+        public int Experience { get; set; }
+
         public Zone CurrentZone { get; set; }
 
         public List<Item> Items { get; set; }

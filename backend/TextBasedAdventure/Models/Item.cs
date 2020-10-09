@@ -25,6 +25,8 @@ namespace TextBasedAdventure.Models
 
         public int HealthBonus { get; set; }
 
+        public int BuyPrice { get; set; }
+
         public Player Player { get; set; }
 
     }

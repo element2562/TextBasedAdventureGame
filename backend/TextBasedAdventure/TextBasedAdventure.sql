@@ -35,6 +35,8 @@ create table Player (
 	MaxHealth integer not null,
 	Strength integer not null,
 	Defense integer not null,
+	Gold integer not null,
+	Experience integer not null,
 	CurrentZoneId integer not null,
 	constraint FK_PlayerZone foreign key(CurrentZoneId) references Zone(ZoneId)
 );
@@ -48,6 +50,7 @@ create table Item (
 	StrengthBonus integer,
 	DefenseBonus integer,
 	HealthBonus integer,
+	BuyPrice integer not null,
 	PlayerId integer,
 	constraint FK_PlayerItem foreign key(PlayerId) references Player(PlayerId)
 );
