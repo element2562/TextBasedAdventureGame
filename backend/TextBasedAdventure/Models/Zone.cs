@@ -8,12 +8,10 @@ namespace TextBasedAdventure.Models
 {
     public class Zone
     {
-
         public int ZoneId { get; set; }
 
         public string ZoneName { get; set; }
 
         public List<Monster> Monsters { get; set; }
-
     }
 }
