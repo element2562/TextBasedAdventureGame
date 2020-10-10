@@ -23,7 +23,6 @@ namespace TextBasedAdventure.Controllers
         [HttpPost(nameof(Create))]
         public async Task<Player> Create(Player data)
         {
-            //this is still missing current zone
             var result = await Task.FromResult(_dapper.Insert<Player>($"insert into Player(PlayerName, [Level], Health, MaxHealth, Strength, Defense, Gold, Experience, CurrentZoneId)" +
                 $"values('{data.PlayerName}', {data.Level}, {data.Health}, {data.MaxHealth}, {data.Strength}, {data.Defense}, {data.Gold}, {data.Experience}, {data.CurrentZone.ZoneId})", null, CommandType.Text));
             return result;
