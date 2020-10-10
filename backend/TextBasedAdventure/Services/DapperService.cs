@@ -26,7 +26,10 @@ namespace TextBasedAdventure.Services
 
         public int Execute(string sp, DynamicParameters parms, CommandType commandType = CommandType.StoredProcedure)
         {
-            throw new NotImplementedException();
+            //did some research on the IDbConnection stuff and found Execute that returns the amount of rows affected.
+            //not sure if this was your idea for it, but figured I'd go ahead and put it in here just in case I got it right lol
+            using IDbConnection db = new SqlConnection(_config.GetConnectionString(Connectionstring));
+            return db.Execute(sp, parms, commandType: commandType);
         }
 
         public T Get<T>(string sp, DynamicParameters parms, CommandType commandType = CommandType.Text)
