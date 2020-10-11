@@ -28,6 +28,13 @@ namespace TextBasedAdventure.Controllers
             return result;
         }
 
+        [HttpGet(nameof(GetAll))]
+        public async Task<List<Player>> GetAll()
+        {
+            var result = await Task.FromResult(_dapper.GetAll<Player>("select * from Player", null, commandType: CommandType.Text));
+            return result;
+        }
+
         [HttpGet(nameof(GetById))]
         public async Task<Player> GetById(int Id)
         {
