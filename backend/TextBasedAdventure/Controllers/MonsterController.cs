@@ -26,7 +26,7 @@ namespace TextBasedAdventure.Controllers
         public async Task<Monster> Create(Monster monster)
         {
             var result = await Task.FromResult(_dapper.Insert<Monster>("insert into Monster(MonsterName, Level, Health, MaxHealth, ZoneId)" +
-            $" values({monster.MonsterName}, {monster.Level}, {monster.Health}, {monster.MaxHealth}, {monster.Zone.ZoneId})", null, commandType: CommandType.Text));
+            $" values('{monster.MonsterName}', {monster.Level}, {monster.Health}, {monster.MaxHealth}, {monster.Zone.ZoneId})", null, commandType: CommandType.Text));
             return result;
         }
 
@@ -54,7 +54,7 @@ namespace TextBasedAdventure.Controllers
         [HttpPatch(nameof(Update))]
         public async Task<Monster> Update(Monster monster)
         {
-            var result = await Task.FromResult(_dapper.Update<Monster>($"update Monster set MonsterName = {monster.MonsterName}, Level = {monster.Level}, Health = {monster.Health}," +
+            var result = await Task.FromResult(_dapper.Update<Monster>($"update Monster set MonsterName = '{monster.MonsterName}', Level = {monster.Level}, Health = {monster.Health}," +
             $" MaxHealth = {monster.MaxHealth}, ZoneId = {monster.Zone.ZoneId}", null, commandType: CommandType.Text));
             return result;
         }

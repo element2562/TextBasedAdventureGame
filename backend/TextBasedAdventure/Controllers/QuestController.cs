@@ -25,8 +25,8 @@ namespace TextBasedAdventure.Controllers
         [HttpPost(nameof(Create))]
         public async Task<Quest> Create(Quest Quest)
         {
-            var result = await Task.FromResult(_dapper.Insert<Quest>("insert into Quest(XpReward, GoldReward, IsComplete)" +
-            $" values({Quest.XpReward}, {Quest.GoldReward}, {Quest.IsComplete})", null, commandType: CommandType.Text));
+            var result = await Task.FromResult(_dapper.Insert<Quest>("insert into Quest(XpReward, GoldReward, IsComplete, NpcId)" +
+            $" values({Quest.XpReward}, {Quest.GoldReward}, {(Quest.IsComplete ? 1 : 0)}, {Quest.Npc.NpcId})", null, commandType: CommandType.Text));
             return result;
         }
 
@@ -55,7 +55,7 @@ namespace TextBasedAdventure.Controllers
         public async Task<Quest> Update(Quest Quest)
         {
             var result = await Task.FromResult(_dapper.Update<Quest>($"update Quest set XpReward = {Quest.XpReward}, GoldReward = {Quest.GoldReward}," +
-            $"IsComplete = {Quest.IsComplete},", null, commandType: CommandType.Text));
+            $"IsComplete = {(Quest.IsComplete ? 1 : 0)}, NpcId = {Quest.Npc.NpcId}", null, commandType: CommandType.Text));
             return result;
         }
     }

@@ -43,7 +43,7 @@ namespace TextBasedAdventure.Controllers
         [HttpPatch(nameof(Update))]
         public async Task<Zone> Update(Zone zone)
         {
-            var result = await Task.FromResult(_dapper.Update<Zone>($"update Zone set ZoneName = {zone.ZoneName} where ZoneId = {zone.ZoneId}", null, commandType: CommandType.Text));
+            var result = await Task.FromResult(_dapper.Update<Zone>($"update Zone set ZoneName = '{zone.ZoneName}' where ZoneId = {zone.ZoneId}", null, commandType: CommandType.Text));
             return result;
         }
 

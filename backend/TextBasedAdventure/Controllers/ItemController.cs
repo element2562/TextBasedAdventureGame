@@ -24,8 +24,9 @@ namespace TextBasedAdventure.Controllers
         [HttpPost(nameof(Create))]
         public async Task<Item> Create(Item item)
         {
-            var result = await Task.FromResult(_dapper.Insert<Item>("insert into Item (ItemName, LevelRequirement, ItemType, Equipped, StrengthBonus, DefenseBonus, HealthBonus, PlayerId)" +
-            $" values({item.ItemName}, {item.LevelRequirement}, {item.Equipped}, {item.StrengthBonus}, {item.DefenseBonus}, {item.HealthBonus}, {item.Player.PlayerId})", null, commandType: CommandType.Text));
+            var result = await Task.FromResult(_dapper.Insert<Item>("insert into Item (ItemName, LevelRequirement, ItemType, Equipped, StrengthBonus, DefenseBonus, HealthBonus, BuyPrice, PlayerId)" +
+            $" values('{item.ItemName}', {item.LevelRequirement}, '{item.ItemType}', {(item.Equipped ? 1 : 0)}, {item.StrengthBonus}, {item.DefenseBonus}, {item.HealthBonus}, " +
+            $"{item.BuyPrice}, {item.Player.PlayerId})", null, commandType: CommandType.Text));
             return result;
         }
 
@@ -54,8 +55,8 @@ namespace TextBasedAdventure.Controllers
         [HttpPatch(nameof(Update))]
         public async Task<Item> Update(Item item)
         {
-            var result = await Task.FromResult(_dapper.Update<Item>($"update Item set ItemName = {item.ItemName}, LevelRequirement = {item.LevelRequirement}, ItemType = {item.ItemType}," +
-            $" Equipped = {item.Equipped}, StrengthBonus = {item.StrengthBonus}, DefenseBonus = {item.DefenseBonus}, HealthBonus = {item.HealthBonus}, PlayerId = {item.Player.PlayerId}",
+            var result = await Task.FromResult(_dapper.Update<Item>($"update Item set ItemName = '{item.ItemName}', LevelRequirement = {item.LevelRequirement}, ItemType = '{item.ItemType}'," +
+            $" Equipped = {(item.Equipped ? 1 : 0)}, StrengthBonus = {item.StrengthBonus}, DefenseBonus = {item.DefenseBonus}, HealthBonus = {item.HealthBonus}, PlayerId = {item.Player.PlayerId}",
             null, commandType: CommandType.Text));
             return result;
         }

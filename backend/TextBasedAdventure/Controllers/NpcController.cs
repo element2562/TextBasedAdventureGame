@@ -26,7 +26,8 @@ namespace TextBasedAdventure.Controllers
         public async Task<Npc> Create(Npc Npc)
         {
             var result = await Task.FromResult(_dapper.Insert<Npc>("insert into Npc(NpcName, IsMerchant, GivesQuests)" +
-            $" values({Npc.NpcName}, {Npc.IsMerchant}, {Npc.GivesQuests})", null, commandType: CommandType.Text));
+            $" values('{Npc.NpcName}', {(Npc.IsMerchant ? 1 : 0)}, {(Npc.GivesQuests ? 1 : 0)})", 
+            null, commandType: CommandType.Text));
             return result;
         }
 
@@ -54,7 +55,8 @@ namespace TextBasedAdventure.Controllers
         [HttpPatch(nameof(Update))]
         public async Task<Npc> Update(Npc Npc)
         {
-            var result = await Task.FromResult(_dapper.Update<Npc>($"update Npc set NpcName = {Npc.NpcName}, IsMerchant = {Npc.IsMerchant}, GivesQuests = {Npc.GivesQuests}", null, commandType: CommandType.Text));
+            var result = await Task.FromResult(_dapper.Update<Npc>($"update Npc set NpcName = '{Npc.NpcName}', IsMerchant = {(Npc.IsMerchant ? 1 : 0)}, GivesQuests = {(Npc.GivesQuests ? 1 : 0)}",
+            null, commandType: CommandType.Text));
             return result;
         }
     }
