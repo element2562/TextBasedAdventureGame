@@ -28,6 +28,25 @@ namespace TextBasedAdventure.Controllers
             return result;
         }
 
+        [HttpPost(nameof(CreateWithProc))]
+        public async Task<int> CreateWithProc(Player data)
+        {
+            var dbparams = new DynamicParameters();
+            dbparams.Add("PlayerName", data.PlayerName, DbType.String);
+            dbparams.Add("Level", data.Level, DbType.Int32);
+            dbparams.Add("Health", data.Health, DbType.Int32);
+            dbparams.Add("MaxHealth", data.MaxHealth, DbType.Int32);
+            dbparams.Add("Strength", data.Strength, DbType.Int32);
+            dbparams.Add("Defense", data.Defense, DbType.Int32);
+            dbparams.Add("Gold", data.PlayerId, DbType.Int32);
+            dbparams.Add("Experience", data.Experience, DbType.Int32);
+            dbparams.Add("CurrentZoneId", data.CurrentZone.ZoneId, DbType.Int32);
+            var result = await Task.FromResult(_dapper.Insert<int>("[dbo].[SP_Create_Player]"
+                , dbparams,
+                commandType: CommandType.StoredProcedure));
+            return result;
+        }
+
         [HttpGet(nameof(GetAll))]
         public async Task<List<Player>> GetAll()
         {
