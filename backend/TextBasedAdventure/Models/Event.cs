@@ -23,4 +23,4 @@ namespace TextBasedAdventure.Models
         public Zone Zone { get; set; }
 
     }
-}
+} 
