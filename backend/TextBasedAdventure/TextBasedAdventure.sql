@@ -94,7 +94,6 @@ create table Quest (
 	constraint FK_QuestNpc foreign key(NpcId) references Npc(NpcId)
 );
 
-USE [Dev]
 GO
 /****** Object:  StoredProcedure [dbo].[SP_Create_Player]    Script Date: 10/26/2020 10:44:21 PM ******/
 SET ANSI_NULLS ON
