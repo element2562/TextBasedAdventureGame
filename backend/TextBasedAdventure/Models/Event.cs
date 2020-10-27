@@ -16,9 +16,9 @@ namespace TextBasedAdventure.Models
 
         public bool EventPassed { get; set; }
 
-        public Monster Monster { get; set; }
+        public Monster? Monster { get; set; }
 
-        public Item Item { get; set; }
+        public Item? Item { get; set; }
 
         public Zone Zone { get; set; }
 

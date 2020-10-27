@@ -55,7 +55,7 @@ namespace TextBasedAdventure.Controllers
         public async Task<Quest> Update(Quest Quest)
         {
             var result = await Task.FromResult(_dapper.Update<Quest>($"update Quest set XpReward = {Quest.XpReward}, GoldReward = {Quest.GoldReward}," +
-            $"IsComplete = {(Quest.IsComplete ? 1 : 0)}, NpcId = {Quest.Npc.NpcId}", null, commandType: CommandType.Text));
+            $"IsComplete = {(Quest.IsComplete ? 1 : 0)}, NpcId = {Quest.Npc.NpcId} where QuestId = {Quest.QuestId}", null, commandType: CommandType.Text));
             return result;
         }
     }

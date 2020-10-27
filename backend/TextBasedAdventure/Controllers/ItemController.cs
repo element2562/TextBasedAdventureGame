@@ -56,7 +56,8 @@ namespace TextBasedAdventure.Controllers
         public async Task<Item> Update(Item item)
         {
             var result = await Task.FromResult(_dapper.Update<Item>($"update Item set ItemName = '{item.ItemName}', LevelRequirement = {item.LevelRequirement}, ItemType = '{item.ItemType}'," +
-            $" Equipped = {(item.Equipped ? 1 : 0)}, StrengthBonus = {item.StrengthBonus}, DefenseBonus = {item.DefenseBonus}, HealthBonus = {item.HealthBonus}, PlayerId = {item.Player.PlayerId}",
+            $" Equipped = {(item.Equipped ? 1 : 0)}, StrengthBonus = {item.StrengthBonus}, DefenseBonus = {item.DefenseBonus}, HealthBonus = {item.HealthBonus}, PlayerId = {item.Player.PlayerId}" +
+            $" where ItemId = {item.ItemId}",
             null, commandType: CommandType.Text));
             return result;
         }
