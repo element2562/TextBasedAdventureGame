@@ -93,3 +93,30 @@ create table Quest (
 	NpcId integer not null,
 	constraint FK_QuestNpc foreign key(NpcId) references Npc(NpcId)
 );
+
+GO
+/****** Object:  StoredProcedure [dbo].[SP_Create_Player]    Script Date: 10/26/2020 10:44:21 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_Create_Player]    
+    @PlayerName VARCHAR(50),
+	@Level int,
+	@Health int,
+	@MaxHealth int,
+	@Strength int,
+	@Defense int,
+	@Gold int,
+	@Experience int,
+	@CurrentZoneId int
+
+AS    
+    BEGIN    
+ DECLARE @PlayerId as BIGINT  
+        INSERT  INTO [Player]    
+                (PlayerName, [Level], Health, MaxHealth, Strength, Defense, Gold, Experience, CurrentZoneId)    
+        VALUES  ( @PlayerName, @Level, @Health, @MaxHealth, @Strength, @Defense, @Gold, @Experience, @CurrentZoneId);   
+    SET @PlayerId = SCOPE_IDENTITY();   
+        SELECT  @PlayerId AS PlayerID;    
+    END;    
