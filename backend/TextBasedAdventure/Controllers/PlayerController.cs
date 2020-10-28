@@ -76,6 +76,27 @@ namespace TextBasedAdventure.Controllers
                 $" CurrentZoneId = {data.CurrentZone.ZoneId} where PlayerId = {data.PlayerId}", null, CommandType.Text));
 			return updatedPlayer;
 		}
-	}
+
+        [HttpPatch(nameof(UpdateWithProc))]
+        public Task<int> UpdateWithProc(Player data)
+        {
+            var dbparams = new DynamicParameters();
+            dbparams.Add("PlayerId", data.PlayerId, DbType.Int32);
+            dbparams.Add("PlayerName", data.PlayerName, DbType.String);
+            dbparams.Add("Level", data.Level, DbType.Int32);
+            dbparams.Add("Health", data.Health, DbType.Int32);
+            dbparams.Add("MaxHealth", data.MaxHealth, DbType.Int32);
+            dbparams.Add("Strength", data.Strength, DbType.Int32);
+            dbparams.Add("Defense", data.Defense, DbType.Int32);
+            dbparams.Add("Gold", data.PlayerId, DbType.Int32);
+            dbparams.Add("Experience", data.Experience, DbType.Int32);
+            dbparams.Add("CurrentZoneId", data.CurrentZone.ZoneId, DbType.Int32);
+
+            var updatePlayer = Task.FromResult(_dapper.Update<int>("[dbo].[SP_Update_Player]",
+                            dbparams,
+                            commandType: CommandType.StoredProcedure));
+            return updatePlayer;
+        }
+    }
 }
 
