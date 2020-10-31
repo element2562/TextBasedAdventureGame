@@ -21,15 +21,7 @@ namespace TextBasedAdventure.Controllers
         }
 
         [HttpPost(nameof(Create))]
-        public async Task<Player> Create(Player data)
-        {
-            var result = await Task.FromResult(_dapper.Insert<Player>($"insert into Player(PlayerName, [Level], Health, MaxHealth, Strength, Defense, Gold, Experience, CurrentZoneId)" +
-                $"values('{data.PlayerName}', {data.Level}, {data.Health}, {data.MaxHealth}, {data.Strength}, {data.Defense}, {data.Gold}, {data.Experience}, {data.CurrentZone.ZoneId})", null, CommandType.Text));
-            return result;
-        }
-
-        [HttpPost(nameof(CreateWithProc))]
-        public async Task<int> CreateWithProc(Player data)
+        public async Task<int> Create(Player data)
         {
             var dbparams = new DynamicParameters();
             dbparams.Add("PlayerName", data.PlayerName, DbType.String);
@@ -68,17 +60,8 @@ namespace TextBasedAdventure.Controllers
             return result;
         }
 
-		[HttpPatch(nameof(Update))]
-		public Task<Player> Update(Player data)
-		{
-            var updatedPlayer = Task.FromResult(_dapper.Update<Player>($"update Player set PlayerName = '{data.PlayerName}', [Level] = {data.Level}," +
-                $" Health = {data.Health}, MaxHealth = {data.MaxHealth}, Strength = {data.Strength}, Defense = {data.Defense}, Gold = {data.Gold}, Experience = {data.Experience}," +
-                $" CurrentZoneId = {data.CurrentZone.ZoneId} where PlayerId = {data.PlayerId}", null, CommandType.Text));
-			return updatedPlayer;
-		}
-
-        [HttpPatch(nameof(UpdateWithProc))]
-        public Task<int> UpdateWithProc(Player data)
+        [HttpPatch(nameof(Update))]
+        public Task<int> Update(Player data)
         {
             var dbparams = new DynamicParameters();
             dbparams.Add("PlayerId", data.PlayerId, DbType.Int32);
