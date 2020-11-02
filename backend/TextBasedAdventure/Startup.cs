@@ -26,6 +26,12 @@ namespace TextBasedAdventure
                                 Configuration.GetConnectionString("DefaultConnection")));
             //Register dapper in scope    
             services.AddScoped<IDapperService, DapperService>();
+
+            services.AddCors(o => o.AddPolicy("TextBasedAdventure", builder => {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +47,8 @@ namespace TextBasedAdventure
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors("TextBasedAdventure");
 
             app.UseEndpoints(endpoints =>
             {
