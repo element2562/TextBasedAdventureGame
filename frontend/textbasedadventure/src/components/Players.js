@@ -38,7 +38,7 @@ export default class Players extends React.Component
                 </thead>
                 <tbody>
                     {this.state.players.map(player => (
-                        <tr>
+                        <tr key={player.playerId}>
                             <th>{player.playerName}</th>
                             <th>{player.level}</th>
                             <th>{player.health}</th>
