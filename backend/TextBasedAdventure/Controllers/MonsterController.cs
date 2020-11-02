@@ -55,7 +55,7 @@ namespace TextBasedAdventure.Controllers
         public async Task<Monster> Update(Monster monster)
         {
             var result = await Task.FromResult(_dapper.Update<Monster>($"update Monster set MonsterName = '{monster.MonsterName}', Level = {monster.Level}, Health = {monster.Health}," +
-            $" MaxHealth = {monster.MaxHealth}, ZoneId = {monster.Zone.ZoneId}", null, commandType: CommandType.Text));
+            $" MaxHealth = {monster.MaxHealth}, ZoneId = {monster.Zone.ZoneId} where MonsterId = {monster.MonsterId}", null, commandType: CommandType.Text));
             return result;
         }
     }

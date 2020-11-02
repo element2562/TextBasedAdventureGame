@@ -26,8 +26,8 @@ namespace TextBasedAdventure.Controllers
         public async Task<Event> Create(Event Event)
         {
             var result = await Task.FromResult(_dapper.Insert<Event>("insert into Event(EventSummary, EventAlreadyEncountered, EventPassed, MonsterId, ItemId, ZoneId)" +
-            $" values('{Event.EventSummary}', {(Event.EventAlreadyEncountered ? 1 : 0)}, {(Event.EventPassed ? 1 : 0)}, {Event.Monster?.MonsterId}, {Event.Item?.ItemId}, {Event.Zone.ZoneId})", 
-            null, commandType: CommandType.Text));
+            $" values('{Event.EventSummary}', {(Event.EventAlreadyEncountered ? 1 : 0)}, {(Event.EventPassed ? 1 : 0)}, {Event.Monster?.MonsterId.ToString() ?? "null"}, " +
+            $"{Event.Item?.ItemId.ToString() ?? "null"}, {Event.Zone.ZoneId})", null, commandType: CommandType.Text));
             return result;
         }
 
@@ -67,7 +67,8 @@ namespace TextBasedAdventure.Controllers
         public async Task<Event> Update(Event Event)
         {
             var result = await Task.FromResult(_dapper.Update<Event>($"update Event set EventSummary = '{Event.EventSummary}', EventAlreadyEncountered = {(Event.EventAlreadyEncountered ? 1 : 0)}, " +
-            $" EventPassed = {(Event.EventPassed ? 1 : 0)}, MonsterId = {Event.Monster.MonsterId}, ItemId = {Event.Item.ItemId}, ZoneId = {Event.Zone.ZoneId}", null, commandType: CommandType.Text));
+            $" EventPassed = {(Event.EventPassed ? 1 : 0)}, MonsterId = {Event.Monster?.MonsterId.ToString() ?? "null"}, ItemId = {Event.Item?.ItemId.ToString() ?? "null"}, " +
+            $"ZoneId = {Event.Zone.ZoneId} where EventId = {Event.EventId}", null, commandType: CommandType.Text));
             return result;
         }
     }

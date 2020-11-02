@@ -24,12 +24,12 @@ drop table if exists Quest;
 
 create table Zone (
 	ZoneId integer not null primary key identity,
-	ZoneName varchar(25)
+	ZoneName nvarchar(25)
 );
 
 create table Player (
 	PlayerId integer not null primary key identity,
-	PlayerName varchar(50) not null,
+	PlayerName nvarchar(50) not null,
 	Level integer not null,
 	Health integer not null,
 	MaxHealth integer not null,
@@ -43,9 +43,9 @@ create table Player (
 
 create table Item (
 	ItemId integer not null primary key identity,
-	ItemName varchar(50) not null,
+	ItemName nvarchar(50) not null,
 	LevelRequirement integer not null,
-	ItemType varchar(15) not null,
+	ItemType nvarchar(15) not null,
 	Equipped bit not null,
 	StrengthBonus integer,
 	DefenseBonus integer,
@@ -57,7 +57,7 @@ create table Item (
 
 create table Monster (
 	MonsterId integer not null primary key identity,
-	MonsterName varchar(25) not null,
+	MonsterName nvarchar(25) not null,
 	Level integer not null,
 	Health integer not null,
 	MaxHealth integer not null,
@@ -67,7 +67,7 @@ create table Monster (
 
 create table Event (
 	EventId integer not null primary key identity,
-	EventSummary varchar(500),
+	EventSummary nvarchar(500),
 	EventAlreadyEncountered bit not null,
 	EventPassed bit not null,
 	MonsterId integer,
@@ -80,7 +80,7 @@ create table Event (
 
 create table Npc (
 	NpcId integer not null primary key identity,
-	NpcName varchar(25) not null,
+	NpcName nvarchar(25) not null,
 	IsMerchant bit not null,
 	GivesQuests bit not null,
 );
@@ -94,14 +94,12 @@ create table Quest (
 	constraint FK_QuestNpc foreign key(NpcId) references Npc(NpcId)
 );
 
+drop procedure if exists [dbo].[SP_Create_Player];
+
 GO
-/****** Object:  StoredProcedure [dbo].[SP_Create_Player]    Script Date: 10/26/2020 10:44:21 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+
 CREATE PROCEDURE [dbo].[SP_Create_Player]    
-    @PlayerName VARCHAR(50),
+	@PlayerName nvarchar(50),
 	@Level int,
 	@Health int,
 	@MaxHealth int,
@@ -112,11 +110,45 @@ CREATE PROCEDURE [dbo].[SP_Create_Player]
 	@CurrentZoneId int
 
 AS    
-    BEGIN    
+	BEGIN    
  DECLARE @PlayerId as BIGINT  
-        INSERT  INTO [Player]    
-                (PlayerName, [Level], Health, MaxHealth, Strength, Defense, Gold, Experience, CurrentZoneId)    
-        VALUES  ( @PlayerName, @Level, @Health, @MaxHealth, @Strength, @Defense, @Gold, @Experience, @CurrentZoneId);   
-    SET @PlayerId = SCOPE_IDENTITY();   
-        SELECT  @PlayerId AS PlayerID;    
-    END;    
+		INSERT  INTO [Player]    
+				(PlayerName, [Level], Health, MaxHealth, Strength, Defense, Gold, Experience, CurrentZoneId)    
+		VALUES  ( @PlayerName, @Level, @Health, @MaxHealth, @Strength, @Defense, @Gold, @Experience, @CurrentZoneId);   
+	SET @PlayerId = SCOPE_IDENTITY();   
+		SELECT  @PlayerId AS PlayerID;    
+	END;    
+
+GO
+
+drop procedure if exists [dbo].[SP_Update_Player];
+
+GO
+
+CREATE PROCEDURE [dbo].[SP_Update_Player] 
+	@PlayerId INT,   
+	@PlayerName nvarchar(50),
+	@Level int,
+	@Health int,
+	@MaxHealth int,
+	@Strength int,
+	@Defense int,
+	@Gold int,
+	@Experience int,
+	@CurrentZoneId int  
+AS    
+	BEGIN    
+
+  UPDATE [Player] 
+  SET PlayerName = @PlayerName,
+  [Level] = @Level,
+  Health = @Health,
+  MaxHealth = @MaxHealth,
+  Strength = @Strength,
+  Defense = @Defense,
+  Gold = @Gold,
+  Experience = @Experience,
+  CurrentZoneId = @CurrentZoneId
+  WHERE PlayerId = @PlayerId 
+			 
+	END;    
