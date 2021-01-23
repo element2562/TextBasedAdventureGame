@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TextBasedAdventure.Models;
@@ -25,16 +26,19 @@ namespace TextBasedAdventure.Controllers
         [HttpPost(nameof(Create))]
         public async Task<Event> Create(Event Event)
         {
-            var result = await Task.FromResult(_dapper.Insert<Event>("insert into Event(EventSummary, EventAlreadyEncountered, EventPassed, MonsterId, ItemId, ZoneId)" +
-            $" values('{Event.EventSummary}', {(Event.EventAlreadyEncountered ? 1 : 0)}, {(Event.EventPassed ? 1 : 0)}, {Event.Monster?.MonsterId.ToString() ?? "null"}, " +
-            $"{Event.Item?.ItemId.ToString() ?? "null"}, {Event.Zone.ZoneId})", null, commandType: CommandType.Text));
+            var result = await Task.FromResult(_dapper.Insert<Event>(
+                "insert into Event(EventSummary, EventAlreadyEncountered, EventPassed, MonsterId, ItemId, ZoneId)"
+                + " values(@EventSummary, @EventAlreadyEncountered, @EventPassed, @MonsterId, @ItemId, @ZoneId",
+                //+ $" values('{Event.EventSummary}', {(Event.EventAlreadyEncountered ? 1 : 0)}, {(Event.EventPassed ? 1 : 0)}, {Event.Monster?.MonsterId.ToString() ?? "null"}, " 
+                //+ $"{Event.Item?.ItemId.ToString() ?? "null"}, {Event.Zone.ZoneId})", 
+                new DynamicParameters(Event), commandType: CommandType.Text));
             return result;
         }
 
         [HttpGet(nameof(GetById))]
-        public async Task<Event> GetById(int EventId)
+        public Event GetById(int EventId)
         {
-            var result = await Task.FromResult(_dapper.Get<Event>($"select * from Event where EventId = {EventId}", null, commandType: CommandType.Text));
+            var result = _dapper.Get<Event>($"select * from Event where EventId = {EventId}", null, commandType: CommandType.Text);
             return result;
         }
 
