@@ -30,7 +30,7 @@ namespace TextBasedAdventure.Controllers
             return result;
         }
 
-        [HttpGet(nameof(GetById))]
+        [Route("GetById/{itemId}")]
         public async Task<Item> GetById(int itemId)
         {
             var result = await Task.FromResult(_dapper.Get<Item>($"select * from Item i inner join Player p on p.PlayerId = {itemId} where i.ItemId = {itemId}", null, commandType: CommandType.Text));
@@ -38,15 +38,15 @@ namespace TextBasedAdventure.Controllers
         }
 
         // My thinking with two get alls is one for seeing all items to edit/delete, then one for players to get all items they have in their inventory
-        [HttpGet(nameof(GetAll))]
+        [Route("GetAll")]
         public async Task<List<Item>> GetAll()
         {
             var result = await Task.FromResult(_dapper.GetAll<Item>("select * from Item", null, commandType: CommandType.Text));
             return result;
         }
 
-        [HttpGet(nameof(GetAll))]
-        public async Task<List<Item>> GetAll(int playerId)
+        [Route("GetByPlayerId/{playerId}")]
+        public async Task<List<Item>> GetByPlayerId(int playerId)
         {
             var result = await Task.FromResult(_dapper.GetAll<Item>($"select * from Item i inner join Player p on p.PlayerId = {playerId}", null, commandType: CommandType.Text));
             return result;

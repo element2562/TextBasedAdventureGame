@@ -20,6 +20,9 @@ namespace TextBasedAdventure
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Register the Swagger services
+            services.AddSwaggerDocument();
+
             services.AddControllers();
                 services.AddDbContext<DataContext.AppContext>(options =>
                             options.UseSqlServer(
@@ -41,6 +44,10 @@ namespace TextBasedAdventure
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Register the Swagger generator and the Swagger UI middlewares
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseHttpsRedirection();
 
