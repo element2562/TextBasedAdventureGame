@@ -24,21 +24,22 @@ namespace TextBasedAdventure.Controllers
         }
 
         [HttpPost(nameof(Create))]
-        public async Task<Event> Create(Event Event)
+        public int Create(EventDto Event)
         {
-            var result = await Task.FromResult(_dapper.Insert<Event>(
+            var result = _dapper.Insert<int>(
                 "insert into Event(EventSummary, EventAlreadyEncountered, EventPassed, MonsterId, ItemId, ZoneId)"
-                + " values(@EventSummary, @EventAlreadyEncountered, @EventPassed, @MonsterId, @ItemId, @ZoneId",
+                + " values(@EventSummary, @EventAlreadyEncountered, @EventPassed, @MonsterId, @ItemId, @ZoneId);"
+                + " select cast(scope_identity() as int)",
                 //+ $" values('{Event.EventSummary}', {(Event.EventAlreadyEncountered ? 1 : 0)}, {(Event.EventPassed ? 1 : 0)}, {Event.Monster?.MonsterId.ToString() ?? "null"}, " 
                 //+ $"{Event.Item?.ItemId.ToString() ?? "null"}, {Event.Zone.ZoneId})", 
-                new DynamicParameters(Event), commandType: CommandType.Text));
+                new DynamicParameters(Event), commandType: CommandType.Text);
             return result;
         }
 
-        [HttpGet(nameof(GetById))]
-        public Event GetById(int EventId)
+        [Route("GetById/{eventId}")]
+        public Event GetById(int eventId)
         {
-            var result = _dapper.Get<Event>($"select * from Event where EventId = {EventId}", null, commandType: CommandType.Text);
+            var result = _dapper.Get<Event>($"select * from Event where EventId = {eventId}", null, commandType: CommandType.Text);
             return result;
         }
 
