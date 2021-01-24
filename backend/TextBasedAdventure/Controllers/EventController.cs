@@ -30,8 +30,6 @@ namespace TextBasedAdventure.Controllers
                 "insert into Event(EventSummary, EventAlreadyEncountered, EventPassed, MonsterId, ItemId, ZoneId)"
                 + " values(@EventSummary, @EventAlreadyEncountered, @EventPassed, @MonsterId, @ItemId, @ZoneId);"
                 + " select cast(scope_identity() as int)",
-                //+ $" values('{Event.EventSummary}', {(Event.EventAlreadyEncountered ? 1 : 0)}, {(Event.EventPassed ? 1 : 0)}, {Event.Monster?.MonsterId.ToString() ?? "null"}, " 
-                //+ $"{Event.Item?.ItemId.ToString() ?? "null"}, {Event.Zone.ZoneId})", 
                 new DynamicParameters(Event), commandType: CommandType.Text);
             return result;
         }
@@ -39,7 +37,7 @@ namespace TextBasedAdventure.Controllers
         [Route("GetById/{eventId}")]
         public Event GetById(int eventId)
         {
-            var result = _dapper.Get<Event>($"select * from Event where EventId = {eventId}", null, commandType: CommandType.Text);
+            var result = _dapper.Get<Event>($"select * from Event where EventId = @eventId", new DynamicParameters(eventId), commandType: CommandType.Text);
             return result;
         }
 
